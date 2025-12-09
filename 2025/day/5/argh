@@ -1,0 +1,21 @@
+        r = (a, b)
+        if ranges:
+            i = bisect(ranges, r)
+            if i-1 > 0 and a <= ranges[i-1][1]:
+                # the third overlaps with the left
+                if b > ranges[i-1][1]:
+                    if i < len(ranges) and b >= ranges[i][0]:
+                        # the third overlaps with the left and with the right
+                        ranges[i-1:i] = ([ranges[i-1][0], ranges[i][1]])
+                    else:
+                        # the third extends the left
+                        ranges[i-1] = (ranges[i-1][0], b)
+                # else: the third is contained in the left
+            else:
+                if i < len(ranges) and b >= ranges[i][0]:
+                    # the third does not overlap with the left but does overlap with the right
+                ranges[i][0] = a
+            else:
+                ranges.insert(i, r)
+        else:
+            ranges.append(r)
